@@ -6,12 +6,7 @@
 int display_help(int ac, char **av)
 {
 	if (ac == 2 && !strcmp(av[1], "-h")) {
-		printf("%s: a C program made for ruining clean code\n\nUSAGE:\n\t%s file_name\
- [new_file_name]\n\tthe default name of the new file is boosted_code.c\n\nDESCRIPTION:\n\tTake\
- a C clean code to ruin it.\n\tReplace '{' by '<%%', '}' by '%%>', '[' by '<:', ']' by ':>' and\
- '#' by '%%:'.\n\tDelete all tabs, line breaks and useless spaces.\n\tReplace all defaults types\
- with some funny define\n\nWARNING:\n\tIf/elseif/else statements with only one line and no bracket\
- didn't work.\n", av[0], av[0]);
+		printf("%s: a C program made for ruining clean code\n\nUSAGE:\n\t%s file_name [new_file_name]\n\tthe default name of the new file is boosted_code.c\n\nDESCRIPTION:\n\tTake a C clean code to ruin it.\n\tReplace '{' by '<%%', '}' by '%%>', '[' by '<:', ']' by ':>' and '#' by '%%:'.\n\tDelete all tabs, line breaks and useless spaces.\n\tReplace all defaults types with some funny define\n\nWARNING:\n\telse statements with only one line and no bracket didn't work.\n", av[0], av[0]);
 		return (0);
 	}
 	return (1);
@@ -34,10 +29,11 @@ FILE *set_new_file(char **av)
 	char *file_name = NULL;
 	FILE *new_file = NULL;
 
-	if (av[1] == NULL || av[2] == NULL)
+	if (av[1] == NULL || av[2] == NULL) {
 		file_name = strdup("boosted_code.c");
-	else
+	} else {
 		file_name = strdup(av[2]);
+	}
 	new_file = fopen(file_name, "w");
 	free(file_name);
 	return (new_file);
@@ -51,9 +47,7 @@ void free_files(FILE *file, FILE *new_file)
 
 void write_define(FILE *new_file)
 {
-	char *defines[9] = {"define BIBAS void\n", "define ALED int\n", "define OSKOUR char\n",
-			    "define OK char*\n", "define ZULUL long int\n", "define SUPER short\n",
-			    "define AXELM long long int\n", "define DADOU NULL\n", NULL};
+	char *defines[9] = {"define BIBAS void\n", "define ALED int\n", "define OSKOUR char\n", "define OK char*\n", "define ZULUL long int\n", "define SUPER short\n", "define AXELM long long int\n", "define DADOU NULL\n", NULL};
 
 	for (int i = 0; defines[i]; i++) {
 		fwrite("%:", 1, 2, new_file);
@@ -90,14 +84,13 @@ int write_spaces(char *line, uint *i)
 
 void write_types(char *line, uint *i, FILE *new_file)
 {
-	char *types[8] = {"void", "int", "char", "char*", "long int", "short", "long long int", NULL};
-	char *replace[8] = {"BIBAS", "ALED", "OSKOUR", "OK", "ZULUL", "SUPER", "AXELM", NULL};
+	char *types[8] = {"void ", "int ", "char ", "char* ", "long int ", "short ", "long long int ", NULL};
+	char *replace[8] = {"BIBAS ", "ALED ", "OSKOUR ", "OK ", "ZULUL ", "SUPER ", "AXELM ", NULL};
 	int len = 0;
 
 	for (int j = 0; types[j]; j++) {
 		len = strlen(types[j]);
-		if (!strncmp(line + *i, types[j], len) && (line[*i + len] == ' ' || line[*i + len == ')']) &&
-		    (*i == 0 || line[*i - 1] == '\t' || line[*i - 1] == '(' || line[*i - 1] == ' ' || line[*i - 1] == ',' || line[*i - 1] == ';')) {
+		if (!strncmp(line + *i, types[j], len) && (line[*i + len] == ' ' || line[*i + len == ')']) && (*i == 0 || line[*i - 1] == '\t' || line[*i - 1] == '(' || line[*i - 1] == ' ' || line[*i - 1] == ',' || line[*i - 1] == ';')) {
 			fwrite(replace[j], 1, strlen(replace[j]), new_file);
 			*i += len;
 		}
