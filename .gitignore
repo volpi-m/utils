@@ -1,0 +1,9 @@
+*~
+
+# Brainfuck
+bf_prog/
+brainfuck
+*.o
+
+# Obfuscation
+obfuscator
