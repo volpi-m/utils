@@ -21,6 +21,10 @@ static int run = 0;
 static int assert_ = 0;
 static int failed = 0;
 
+#ifdef __cplusplus
+static int exceptions = 0;
+#endif
+
 // Declare tests and suites
 #define SALUT(fname) static void (fname)(void)
 #define SALUT_SUITE(sname) static void (sname)(void)
@@ -44,6 +48,16 @@ static int failed = 0;
 )
 
 // Report
+#ifdef __cplusplus
+#define CIAO() SAFE_ZONE (\
+    printf("%d Test(s), %d Assertion(s), ", run, assert_);\
+    if (!failed)\
+        printf("0 Assertion failed\n");\
+    else\
+        printf("%d Assertion(s) failed\n", failed);\
+	printf("%d Exceptions\n", exceptions);\
+)
+#else
 #define CIAO() SAFE_ZONE (\
     printf("%d Test(s), %d Assertion(s), ", run, assert_);\
     if (!failed)\
@@ -51,6 +65,7 @@ static int failed = 0;
     else\
         printf("%d Assertion(s) failed\n", failed);\
 )
+#endif
 
 // Assertions
 #define slt_true(test) SAFE_ZONE(\
